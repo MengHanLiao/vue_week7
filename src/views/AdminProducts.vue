@@ -157,7 +157,6 @@ export default {
       controlDeleteModal.openModal();
     },
     deleteProduct() {
-      console.log(this.tempProduct.id);
       this.$http
         .delete(
           `${process.env.VUE_APP_API_BASEURL}/api/${process.env.VUE_APP_PATH}/admin/product/${this.tempProduct.id}`,

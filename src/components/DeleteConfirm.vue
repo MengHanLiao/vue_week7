@@ -42,7 +42,7 @@
 import modalControl from '../mixins/modalControl';
 
 export default {
-  props: ['deleteItem'],
+  props: ['delete-item'],
   mixins: [modalControl],
   methods: {
     executeDelete() {

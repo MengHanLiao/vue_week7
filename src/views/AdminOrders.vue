@@ -2,7 +2,7 @@
   <div class="container my-5">
     <div class="d-flex justify-content-between mb-3">
       <h2>訂單列表</h2>
-      <button class="btn btn-danger" type="button">刪除所有訂單</button>
+      <button class="btn btn-danger" type="button" @click="openDeleteModal(true)">刪除所有訂單</button>
     </div>
     <div class="tabel-responsive">
       <table class="table align-middle mb-4">
@@ -59,7 +59,11 @@
                   >
                     檢視
                   </button>
-                  <button type="button" class="btn btn-outline-danger">
+                  <button
+                    type="button"
+                    class="btn btn-outline-danger"
+                    @click="openDeleteModal(false, order)"
+                  >
                     刪除
                   </button>
                 </div>
@@ -70,6 +74,11 @@
       </table>
       <PaginationComponent :page-data="pagination" @emit-page="getOrders"></PaginationComponent>
     </div>
+    <DeleteConfirm
+      ref="deleteModal"
+      :delete-item="tempOrder"
+      @emit-delete="deleteOrder"
+    ></DeleteConfirm>
     <OrderModal ref="orderModal" :order="tempOrder" @emit-page="getOrders"></OrderModal>
   </div>
 </template>
@@ -77,6 +86,7 @@
 <script>
 import PaginationComponent from '../components/PaginationComponent.vue';
 import OrderModal from '../components/OrderModal.vue';
+import DeleteConfirm from '../components/DeleteConfirm.vue';
 
 export default {
   data() {
@@ -84,11 +94,13 @@ export default {
       orders: [],
       pagination: {},
       tempOrder: {},
+      isDeleteAll: false,
     };
   },
   components: {
     PaginationComponent,
     OrderModal,
+    DeleteConfirm,
   },
   methods: {
     getOrders(target = 1) {
@@ -129,6 +141,31 @@ export default {
     },
     changeDate(timestamp) {
       return new Date(timestamp * 1000).toLocaleDateString();
+    },
+    openDeleteModal(isAll, order) {
+      if (isAll) {
+        this.isDeleteAll = true;
+      } else {
+        this.isDeleteAll = false;
+        this.tempOrder = { ...order };
+        this.tempOrder.create_at = this.changeDate(order.create_at);
+      }
+      const deleteComponent = this.$refs.deleteModal;
+      deleteComponent.openModal();
+    },
+    deleteOrder() {
+      let url = `${process.env.VUE_APP_API_BASEURL}/api/${process.env.VUE_APP_PATH}/admin/order/${this.tempOrder.id}`;
+      if (this.isDeleteAll) {
+        url = `${process.env.VUE_APP_API_BASEURL}/api/${process.env.VUE_APP_PATH}/admin/orders/all`;
+      }
+      this.$http.delete(url).then((res) => {
+        this.getOrders();
+        const deleteComponent = this.$refs.deleteModal;
+        deleteComponent.closeModal();
+        alert(res.data.message);
+      }).catch((err) => {
+        alert(err.response.data.message);
+      });
     },
   },
   mounted() {
