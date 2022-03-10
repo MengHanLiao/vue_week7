@@ -9,6 +9,7 @@
               type="email"
               class="form-control"
               id="userEmail"
+              required="required"
               placeholder="請輸入 Email"
               v-model="user.username"
             />
@@ -19,13 +20,14 @@
               type="password"
               class="form-control"
               id="userPassword"
+              required="required"
               placeholder="請輸入密碼"
               v-model="user.password"
             />
             <label for="userPassword">密碼</label>
           </div>
           <button
-            type="submit"
+            type="button"
             class="btn btn-primary w-100"
             @click="signin"
           >
@@ -59,7 +61,8 @@ export default {
           this.$router.push('/admin/products');
         })
         .catch((err) => {
-          console.dir(err);
+          loader.hide();
+          alert(err.response.data.message);
         });
     },
   },

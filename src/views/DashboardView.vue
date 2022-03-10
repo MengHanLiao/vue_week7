@@ -23,10 +23,10 @@
               <router-link class="nav-link" to="/admin/products">產品列表</router-link>
             </li>
             <li class="nav-item">
-              <router-link class="nav-link" to="/admin/coupouns">優惠券列表</router-link>
+              <router-link class="nav-link" to="/admin/orders">訂單列表</router-link>
             </li>
             <li class="nav-item">
-              <router-link class="nav-link" to="/admin/orders">訂單列表</router-link>
+              <router-link class="nav-link" to="/admin/coupouns">優惠券列表</router-link>
             </li>
           </ul>
           <button type="button" class="btn btn-success" @click="logout">登出</button>
@@ -56,7 +56,6 @@ export default {
         this.$http.defaults.headers.common.Authorization = token;
         this.$http.post(`${process.env.VUE_APP_API_BASEURL}/api/user/check`).then(() => {
           this.isSignup = true;
-          alert('成功登入');
         }).catch((err) => {
           console.dir(err);
         });
