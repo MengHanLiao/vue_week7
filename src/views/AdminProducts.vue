@@ -124,11 +124,11 @@ export default {
     },
     openProductModal(isNew, product) {
       if (isNew) {
-        this.isNew = true;
         this.tempProduct = {};
+        this.isNew = true;
       } else {
-        this.isNew = false;
         this.tempProduct = product;
+        this.isNew = false;
       }
       const controlPrdouctModal = this.$refs.productModal;
       controlPrdouctModal.openModal();
@@ -142,13 +142,21 @@ export default {
       }
       this.$http[method](url, { data: obj })
         .then((res) => {
-          alert(res.data.message);
+          this.$httpMessageState({
+            style: 'success',
+            title: '產品更新',
+            content: res.data.message,
+          });
           this.getProducts();
           const controlPrdouctModal = this.$refs.productModal;
           controlPrdouctModal.closeModal();
         })
         .catch((err) => {
-          alert(err.response.data.message);
+          this.$httpMessageState({
+            style: 'danger',
+            title: '產品更新',
+            content: err.response.data.message,
+          });
         });
     },
     openDeleteModal(product) {
@@ -162,13 +170,21 @@ export default {
           `${process.env.VUE_APP_API_BASEURL}/api/${process.env.VUE_APP_PATH}/admin/product/${this.tempProduct.id}`,
         )
         .then((res) => {
-          alert(res.data.message);
+          this.$httpMessageState({
+            style: 'success',
+            title: '產品刪除',
+            content: res.data.message,
+          });
           this.getProducts();
           const controlDeleteModal = this.$refs.deleteModal;
           controlDeleteModal.closeModal();
         })
         .catch((err) => {
-          alert(err.response.data.message);
+          this.$httpMessageState({
+            style: 'danger',
+            title: '產品刪除',
+            content: err.response.data.message,
+          });
         });
     },
   },

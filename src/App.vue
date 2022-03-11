@@ -3,5 +3,6 @@
 </template>
 
 <style lang="scss">
-@import 'bootstrap/scss/bootstrap';
+@import "~bootstrap/scss/functions";
+@import "~bootstrap/scss/bootstrap";
 </style>

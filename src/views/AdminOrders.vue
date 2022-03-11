@@ -115,6 +115,7 @@ export default {
           loader.hide();
         })
         .catch((err) => {
+          // eslint-disable-next-line no-alert
           alert(err.response.data.message);
           loader.hide();
         });
@@ -127,10 +128,18 @@ export default {
           `${process.env.VUE_APP_API_BASEURL}/api/${process.env.VUE_APP_PATH}/admin/order/${this.tempOrder.id}`,
           { data: this.tempOrder },
         ).then((res) => {
-          alert(res.data.message);
+          this.$httpMessageState({
+            style: 'success',
+            title: '訂單更新',
+            content: res.data.message,
+          });
           this.getOrders();
         }).catch((err) => {
-          alert(err.response.data.message);
+          this.$httpMessageState({
+            style: 'danger',
+            title: '訂單更新',
+            content: err.response.data.message,
+          });
         });
     },
     openOrderModal(order) {
@@ -162,9 +171,17 @@ export default {
         this.getOrders();
         const deleteComponent = this.$refs.deleteModal;
         deleteComponent.closeModal();
-        alert(res.data.message);
+        this.$httpMessageState({
+          style: 'success',
+          title: '訂單刪除',
+          content: res.data.message,
+        });
       }).catch((err) => {
-        alert(err.response.data.message);
+        this.$httpMessageState({
+          style: 'danger',
+          title: '訂單刪除',
+          content: err.response.data.message,
+        });
       });
     },
   },

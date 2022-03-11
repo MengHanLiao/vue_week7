@@ -199,6 +199,7 @@ export default {
   },
   watch: {
     product() {
+      this.tempProduct = {};
       if (Object.keys(this.product).length) {
         this.tempProduct = JSON.parse(JSON.stringify(this.product));
       }

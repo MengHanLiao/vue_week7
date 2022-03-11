@@ -62,6 +62,7 @@ export default {
         })
         .catch((err) => {
           loader.hide();
+          // eslint-disable-next-line no-alert
           alert(err.response.data.message);
         });
     },
